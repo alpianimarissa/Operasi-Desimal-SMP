@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Interaktif HOTS: Operasi Desimal Kelas 7 SMP</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- MathJax Engine untuk render Math/LaTeX -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#2563EB',
+                            indigo: '#4F46E5',
+                            emerald: '#10B981',
+                            amber: '#F59E0B',
+                            rose: '#EF4444',
+                            dark: '#0F172A'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Poppins', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #F8FAFC; }
+        h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #F1F5F9; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 4px; }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+
+    <!-- Header Navigation -->
+    <header class="bg-white shadow-sm border-b border-slate-200 sticky top-0 z-30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 bg-blue-600 text-white rounded-lg shadow-sm">
+                        <i class="fa-solid fa-square-root-variable text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-heading font-bold text-base sm:text-lg text-slate-800 leading-tight">Quiz HOTS Operasi Desimal</h1>
+                        <p class="text-xs text-slate-500">Matematika Kelas 7 SMP • 40 Soal</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <button onclick="resetQuiz()" class="text-xs text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 font-medium px-3 py-1.5 rounded-lg transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-rotate-right"></i> Reset Progres
+                    </button>
+                    <button onclick="submitQuizConfirm()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs sm:text-sm px-4 py-2 rounded-lg shadow transition flex items-center gap-2">
+                        <i class="fa-solid fa-paper-plane"></i> Selesai
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+
+            <!-- Sidebar Navigation Soal -->
+            <aside class="lg:col-span-1 order-2 lg:order-1">
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm sticky top-20">
+                    <div class="flex justify-between items-center mb-4 border-b border-slate-100 pb-3">
+                        <h3 class="font-heading font-semibold text-slate-800 text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-list-check text-blue-600"></i> Navigasi Soal
+                        </h3>
+                        <span id="progress-text" class="text-xs bg-blue-50 text-blue-700 font-semibold px-2.5 py-1 rounded-full">0/40 Dijawab</span>
+                    </div>
+
+                    <!-- Legend Status -->
+                    <div class="grid grid-cols-2 gap-2 text-[11px] text-slate-600 mb-4 bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+                        <div class="flex items-center gap-1.5"><span class="w-3 h-3 bg-emerald-500 rounded-sm"></span> Benar</div>
+                        <div class="flex items-center gap-1.5"><span class="w-3 h-3 bg-rose-500 rounded-sm"></span> Salah</div>
+                        <div class="flex items-center gap-1.5"><span class="w-3 h-3 bg-amber-400 rounded-sm"></span> Ragu-ragu</div>
+                        <div class="flex items-center gap-1.5"><span class="w-3 h-3 bg-slate-200 rounded-sm"></span> Belum Diisi</div>
+                    </div>
+
+                    <!-- Grid Button 1-40 -->
+                    <div id="nav-grid" class="grid grid-cols-5 gap-2 max-h-72 lg:max-h-96 overflow-y-auto custom-scrollbar pr-1">
+                        <!-- JS injected buttons -->
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Question Area -->
+            <section class="lg:col-span-3 order-1 lg:order-2 space-y-6">
+                <!-- Question Card -->
+                <div id="question-card" class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 transition-all">
+                    <!-- Top Info bar -->
+                    <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
+                        <div class="flex items-center gap-2">
+                            <span id="question-number-badge" class="px-3 py-1 bg-blue-600 text-white font-bold text-xs rounded-lg">Soal 1</span>
+                            <span id="question-difficulty" class="px-2.5 py-1 bg-amber-100 text-amber-800 font-semibold text-xs rounded-lg">HOTS</span>
+                            <span id="question-type" class="px-2.5 py-1 bg-slate-100 text-slate-600 font-medium text-xs rounded-lg">Soal Cerita</span>
+                        </div>
+                        <button id="doubt-btn" onclick="toggleDoubt()" class="text-xs font-medium text-slate-500 hover:text-amber-600 bg-slate-50 border border-slate-200 hover:border-amber-400 px-3 py-1.5 rounded-lg transition flex items-center gap-1.5">
+                            <i class="fa-regular fa-bookmark"></i> Tandai Ragu
+                        </button>
+                    </div>
+
+                    <!-- Question Text -->
+                    <div id="question-text" class="text-slate-800 text-base sm:text-lg font-medium leading-relaxed mb-6">
+                        <!-- JS injected question -->
+                    </div>
+
+                    <!-- Options Container -->
+                    <div id="options-container" class="space-y-3 mb-6">
+                        <!-- JS injected options -->
+                    </div>
+
+                    <!-- Realtime Feedback Box -->
+                    <div id="feedback-box" class="hidden p-4 sm:p-5 rounded-xl text-xs sm:text-sm font-medium border transition-all space-y-2">
+                        <div id="feedback-title" class="font-bold flex items-center gap-2 text-sm"></div>
+                        <div id="feedback-rationale" class="text-slate-700 leading-relaxed"></div>
+                    </div>
+                </div>
+
+                <!-- Navigation Action Buttons -->
+                <div class="flex justify-between items-center bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                    <button id="prev-btn" onclick="prevQuestion()" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium text-sm rounded-xl transition flex items-center gap-2">
+                        <i class="fa-solid fa-arrow-left"></i> Sebelumnya
+                    </button>
+                    <span id="current-pos" class="text-xs font-medium text-slate-500">Hal 1 dari 40</span>
+                    <button id="next-btn" onclick="nextQuestion()" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-xl transition flex items-center gap-2">
+                        Selanjutnya <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal Result / Laporan Akhir -->
+    <div id="result-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto custom-scrollbar">
+            <div class="text-center space-y-2">
+                <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto text-2xl font-bold">
+                    <i class="fa-solid fa-trophy"></i>
+                </div>
+                <h2 class="text-2xl font-bold font-heading text-slate-800">Hasil Akhir Quiz</h2>
+                <p class="text-xs text-slate-500">Evaluasi Pembelajaran Operasi Desimal Kelas 7 SMP</p>
+            </div>
+
+            <div class="bg-gradient-to-br from-blue-600 to-indigo-700 text-white p-6 rounded-2xl text-center space-y-2 shadow-lg">
+                <p class="text-xs uppercase tracking-wider text-blue-200 font-medium">Nilai Akhir Kamu</p>
+                <div id="final-score" class="text-5xl font-extrabold font-heading">0.0</div>
+                <p id="score-predicate" class="text-sm font-medium text-blue-100"></p>
+            </div>
+
+            <div class="grid grid-cols-3 gap-3 text-center">
+                <div class="p-3 bg-emerald-50 rounded-xl border border-emerald-100">
+                    <p class="text-xs text-emerald-600 font-medium">Benar</p>
+                    <p id="count-correct" class="text-xl font-bold text-emerald-700">0</p>
+                </div>
+                <div class="p-3 bg-rose-50 rounded-xl border border-rose-100">
+                    <p class="text-xs text-rose-600 font-medium">Salah</p>
+                    <p id="count-wrong" class="text-xl font-bold text-rose-700">0</p>
+                </div>
+                <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                    <p class="text-xs text-slate-500 font-medium">Terisi</p>
+                    <p id="count-filled" class="text-xl font-bold text-slate-700">0/40</p>
+                </div>
+            </div>
+
+            <div class="flex gap-3 pt-2">
+                <button onclick="closeModal()" class="w-1/2 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl text-sm transition">
+                    Tinjau Jawaban
+                </button>
+                <button onclick="resetQuiz()" class="w-1/2 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl text-sm transition">
+                    Coba Lagi
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-4 mt-8">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500">
+            © 2026 Interactive Math Quiz System — Modul Desimal Kelas 7 SMP. Progres tersimpan secara otomatis di browser.
+        </div>
+    </footer>
+
+    <!-- Quiz Engine Script & Database -->
+    <script>
+        // Data 40 Soal HOTS & Medium Operasi Desimal
+        const questionsData = [
+            {
+                id: 1,
+                category: "Medium",
+                type: "Soal Langsung",
+                question: "Berapakah hasil dari $4,35 + 2,68 - 1,75$?",
+                options: [
+                    { key: "A", text: "5,28", rationale: "Tepat! $4,35 + 2,68 = 7,03$, kemudian $7,03 - 1,75 = 5,28$." },
+                    { key: "B", text: "5,18", rationale: "Pengurangan kurang tepat pada nilai per seratusan." },
+                    { key: "C", text: "5,38", rationale: "Terjadi kesalahan penjumlahan saat mengelompokkan nilai tempat." },
+                    { key: "D", text: "4,28", rationale: "Kesalahan peminjaman pada angka persepuluhan." }
+                ],
+                correct: "A"
+            },
+            {
+                id: 2,
+                category: "HOTS",
+                type: "Soal Cerita",
+                question: "Ibu membeli $2,5\\text{ kg}$ beras dengan harga $\\text{Rp }13.500,00$ per kg dan $1,75\\text{ kg}$ gula pasir dengan harga $\\text{Rp }16.000,00$ per kg. Jika Ibu membayar dengan selembar uang $\\text{Rp }100.000,00$, berapa uang kembalian yang diterima Ibu?",
+                options: [
+                    { key: "A", text: "$\\text{Rp }38.250,00$", rationale: "Kesalahan menghitung total harga gula pasir." },
+                    { key: "B", text: "$\\text{Rp }38.000,00$", rationale: "Salah penjumlahan total belanja." },
+                    { key: "C", text: "$\\text{Rp }37.750,00$", rationale: "Kurang teliti dalam pengurangan kembalian." },
+                    { key: "D", text: "$\\text{Rp }38.250,00$", rationale: "Perhitungan tepat: Total beras = $2,5 \\times 13.500 = 33.750$, Gula = $1,75 \\times 16.000 = 28.000$. Total = $61.750$. Kembalian = $100.000 - 61.750 = 38.250$." }
+                ],
+                correct: "D"
+            },
+            {
+                id: 3,
+                category: "Medium",
+                type: "Soal Langsung",
+                question: "Hitunglah nilai dari $0,4 \\times 0,15 \\div 0,02$.",
+                options: [
+                    { key: "A", text: "0,3", rationale: "Kesalahan pergeseran koma saat pembagian." },
+                    { key: "B", text: "3,0", rationale: "Benar! $0,4 \\times 0,15 = 0,06$. Selanjutnya $0,06 \\div 0,02 = 6 \\div 2 = 3,0$." },
+                    { key: "C", text: "0,03", rationale: "Terlalu banyak menempatkan angka 0 di belakang koma." },
+                    { key: "D", text: "30,0", rationale: "Kelebihan mengalikan dengan faktor 10." }
+                ],
+                correct: "B"
+            },
+            {
+                id: 4,
+                category: "HOTS",
+                type: "Soal Cerita",
+                question: "Sebuah kolam renang diisi air melalui kran bertagihan debit $1,25\\text{ liter/detik}$. Jika kolam tersebut terisi penuh setelah $1,2\\text{ jam}$, berapakah volume total kolam renang tersebut dalam liter? ($1\\text{ jam} = 3.600\\text{ detik}$)",
+                options: [
+                    { key: "A", text: "5.400 liter", rationale: "Benar! Total detik = $1,2 \\times 3.600 = 4.320\\text{ detik}$. Volume = $1,25 \\times 4.320 = 5.400\\text{ liter}$." },
+                    { key: "B", text: "4.500 liter", rationale: "Kesalahan perkalian $1,25 \\times 3.600$." },
+                    { key: "C", text: "5.040 liter", rationale: "Salah saat mengalikan jumlah detik." },
+                    { key: "D", text: "6.000 liter", rationale: "Menggunakan asumsi 1 jam = 60 menit tanpa mengonversi ke detik." }
+                ],
+                correct: "A"
+            },
+            {
+                id: 5,
+                category: "Medium",
+                type: "Soal Langsung",
+                question: "Nilai dari $\\frac{2,4 + 1,6}{0,8 - 0,3}$ adalah...",
+                options: [
+                    { key: "A", text: "6,0", rationale: "Kesalahan pembagian $4 \\div 0,5$." },
+                    { key: "B", text: "7,5", rationale: "Salah pada pengurangan penyebut." },
+                    { key: "C", text: "8,0", rationale: "Benar! Pembilang = $2,4 + 1,6 = 4,0$. Penyebut = $0,8 - 0,3 = 0,5$. Hasil = $4,0 \\div 0,5 = 40 \\div 5 = 8,0$." },
+                    { key: "D", text: "10,0", rationale: "Terjadi kesalahan pembagian desimal." }
+                ],
+                correct: "C"
+            },
+            {
+                id: 6,
+                category: "HOTS",
+                type: "Soal Cerita",
+                question: "Andi, Budi, dan Candra membagi biaya sewa lapangan futsal sebesar $\\text{Rp }135.000,00$. Andi membayar $0,4$ bagian, Budi membayar $0,35$ bagian, dan sisa biaya ditanggung oleh Candra. Berapakah nominal uang yang harus dibayar Candra?",
+                options: [
+                    { key: "A", text: "$\\text{Rp }33.750,00$", rationale: "Benar! Sisa bagian Candra = $1 - (0,4 + 0,35) = 1 - 0,75 = 0,25$. Nominal Candra = $0,25 \\times 135.000 = \\text{Rp }33.750,00$." },
+                    { key: "B", text: "$\\text{Rp }27.000,00$", rationale: "Ini adalah bagian yang dibayar jika $0,20$ bagian." },
+                    { key: "C", text: "$\\text{Rp }40.500,00$", rationale: "Ini merupakan bagian yang dibayar Budi ($0,30$ bagian)." },
+                    { key: "D", text: "$\\text{Rp }47.250,00$", rationale: "Ini merupakan bagian yang dibayar Budi ($0,35$ bagian)." }
+                ],
+                correct: "A"
+            },
+            {
+                id: 7,
+                category: "Medium",
+                type: "Soal Langsung",
+                question: "Jika $a = 1,2$ dan $b = 0,25$, berapakah nilai dari $\\frac{a^2}{b}$?",
+                options: [
+                    { key: "A", text: "5,76", rationale: "Benar! $a^2 = 1,2 \\times 1,2 = 1,44$. Nilai $\\frac{1,44}{0,25} = 1,44 \\times 4 = 5,76$." },
+                    { key: "B", text: "4,80", rationale: "Hanya menghitung $1,2 \\div 0,25$ tanpa menguadratkan $a$." },
+                    { key: "C", text: "6,24", rationale: "Salah perhitungan saat mengalikan dengan 4." },
+                    { key: "D", text: "2,88", rationale: "Menguadratkan hasil pembagian." }
+                ],
+                correct: "A"
+            },
+            {
+                id: 8,
+                category: "HOTS",
+                type: "Soal Cerita",
+                question: "Sebuah mobil membutuhkan $1\\text{ liter}$ bensin untuk menempuh jarak $12,5\\text{ km}$. Jika harga bensin $\\text{Rp }12.500,00$ per liter, berapakah biaya bensin yang diperlukan untuk menempuh perjalanan sejauh $200\\text{ km}$?",
+                options: [
+                    { key: "A", text: "$\\text{Rp }180.000,00$", rationale: "Salah menghitung kebutuhan volume bensin." },
+                    { key: "B", text: "$\\text{Rp }200.000,00$", rationale: "Benar! Bensin yang dibutuhkan = $200 \\div 12,5 = 16\\text{ liter}$. Total Biaya = $16 \\times 12.500 = \\text{Rp }200.000,00$." },
+                    { key: "C", text: "$\\text{Rp }225.000,00$", rationale: "Keberlebihan estimasi liter bensin." },
+                    { key: "D", text: "$\\text{Rp }250.000,00$", rationale: "Mengalikan langsung $200 \\times 12,5$." }
+                ],
+                correct: "B"
+            },
+            {
+                id: 9,
+                category: "Medium",
+                type: "Soal Langsung",
+                question: "Urutkan bilangan desimal berikut dari yang terkecil ke yang terbesar: $0,375$; $0,35$; $0,4$; $0,305$.",
+                options: [
+                    { key: "A", text: "$0,305; 0,35; 0,375; 0,4$", rationale: "Tepat! Menyamakan digit: $0,305 < 0,350 < 0,375 < 0,400$." },
+                    { key: "B", text: "$0,35; 0,305; 0,375; 0,4$", rationale: "Menganggap 0,35 lebih kecil dari 0,305." },
+                    { key: "C", text: "$0,305; 0,375; 0,35; 0,4$", rationale: "Salah membandingkan 0,375 dan 0,35." },
+                    { key: "D", text: "$0,4; 0,375; 0,35; 0,305$", rationale: "Urutan dari terbesar ke terkecil." }
+                ],
+                correct: "A"
+            },
+            {
+                id: 10,
+                category: "HOTS",
+                type: "Soal Cerita",
+                question: "Seorang pedagang membeli $50\\text{ kg}$ telur seharga $\\text{Rp }1.250.000,00$. Selama transportasi, $2,5\\text{ kg}$ telur pecah dan tidak dapat dijual. Jika sisa telur dijual dengan harga $\\text{Rp }30.000,00$ per kg, berapa keuntungan pedagang tersebut?",
+                options: [
+                    { key: "A", text: "$\\text{Rp }150.000,00$", rationale: "Salah mengalkulasi jumlah telur yang dijual." },
+                    { key: "B", text: "$\\text{Rp }175.000,00$", rationale: "Benar! Telur tersisa = $50 - 2,5 = 47,5\\text{ kg}$. Pendapatan = $47,5 \\times 30.000 = \\text{Rp }1.425.000,00$. Untung = $1.425.000 - 1.250.000 = \\text{Rp }175.000,00$." },
+                    { key: "C", text: "$\\text{Rp }200.000,00$", rationale: "Mengabaikan telur yang pecah." },
+                    { key: "D", text: "$\\text{Rp }225.000,00$", rationale: "Salah dalam pengurangan modal." }
+                ],
+                correct: "B"
+            },
+            {
+                id: 11,
+                category: "Medium",
+                type: "Soal Langsung",
+                question: "Hitunglah bentuk desimal dari pecahan $\\frac{7}{8} + \\frac{3}{5}$.",
+                options: [
+                    { key: "A", text: "1,425", rationale: "Salah konversi pecahan ke desimal." },
+                    { key: "B", text: "1,455", rationale: "Kesalahan penjumlahan." },
+                    { key: "C", text: "1,475", rationale: "Benar! $\\frac{7}{8} = 0,875$ dan $\\frac{3}{5} = 0,60$. Maka $0,875 + 0,60 = 1,475$." },
+                    { key: "D", text: "1,525", rationale: "Salah pada pembulatan per seribuan." }
+                ],
+                correct: "C"
+            },
+            {
+                id: 12,
+                category: "HOTS",
+                type: "Soal Cerita",
+                question: "Sebuah kain sepanjang $15,6\\text{ meter}$ dipotong menjadi beberapa bagian sama panjang untuk membuat taplak meja. Jika setiap taplak meja membutuhkan $1,2\\text{ meter}$ kain dan sisa kain digunakan untuk membuat pita dekorasi sepanjang $0,6\\text{ meter}$, berapa banyak taplak meja yang dapat dibuat?",
+                options: [
+                    { key: "A", text: "11 buah", rationale: "Salah mengurangi sisa kain." },
+                    { key: "B", text: "12 buah", rationale: "Benar! Kain untuk taplak = $15,6 - 0,6 = 15,0\\text{ m}$. Banyak taplak = $15,0 \\div 1,2 = 150 \\div 12 = 12$ buah utuh." },
+                    { key: "C", text: "13 buah", rationale: "Membagi langsung tanpa memotong kain dekorasi." },
+                    { key: "D", text: "14 buah", rationale: "Kesalahan pembagian $15,6 \\div 1,2$." }
+                ],
+                correct: "B"
+            },
+            {
+                id: 13,
+                category: "Medium",
+                type: "Soal Langsung",
+                question: "Berapakah hasil dari $(0,6 \\times 0,8) + (0,4 \\div 0,05)$?",
+                options: [
+                    { key: "A", text: "8,48", rationale: "Benar! $0,6 \\times 0,8 = 0,48$. Lalu $0,4 \\div 0,05 = 40 \\div 5 = 8$. Maka $0,48 + 8 = 8,48$." },
+                    { key: "B", text: "1,28", rationale: "Kesalahan pembagian $0,4 \\div 0,05$ menjadi 0,8." },
+                    { key: "C", text: "8,08", rationale: "Salah mengalikan $0,6 \\times 0,8$." },
+                    { key: "D", text: "12,48", rationale: "Salah operasi penjumlahan desimal." }
+                ],
+                correct: "A"
+            },
+            {
+                id: 14,
+                category: "HOTS",
+                type: "Soal Cerita",
+                question: "Pak Budi mencatat penggunaan air di rumahnya. Hari Senin terpakai $1,45\\text{ m}^3$, Selasa $1,8\\text{ m}^3$, dan Rabu $1,25\\text{ m}^3$. Jika tarif air adalah $\\text{Rp }4.500,00$ per $\\text{m}^3$, berapa total biaya pemakaian air selama 3 hari tersebut?",
+                options: [
+                    { key: "A", text: "$\\text{Rp }19.500,00$", rationale: "Salah menjumlahkan pemakaian air." },
+                    { key: "B", text: "$\\text{Rp }20.250,00$", rationale: "Benar! Total volume = $1,45 + 1,80 + 1,25 = 4,5\\text{ m}^3$. Total Biaya = $4,5 \\times 4.500 = \\text{Rp }20.250,00$." },
+                    { key: "C", text: "$\\text{Rp }21.000,00$", rationale: "Salah mengalikan desimal dengan nominal uang." },
+                    { key: "D", text: "$\\text{Rp }22.500,00$", rationale: "Menganggap total volume $5\\text{ m}^3$." }
+                ],
+                correct: "B"
+            },
+            {
+                id: 15,
+                category: "Medium",
+                type: "Soal Langsung",
+                question: "Jika $x = 0,75$ dan $y = 0,5$, maka nilai dari $\\frac{x + y}{x - y}$ adalah...",
+                options: [
+                    { key: "A", text: "3,0", rationale: "Salah pada pembagian $1,25 \\div 0,25$." },
+                    { key: "B", text: "4,0", rationale: "Kurang teliti dalam mengalikan penyebut." },
+                    { key: "C", text: "5,0", rationale: "Benar! Pembilang = $0,75 + 0,50 = 1,25$. Penyebut = $0,75 - 0,50 = 0,25$. Hasil = $1,25 \\div 0,25 = 5,0$." },
+                    { key: "D", text: "6,0", rationale: "Kesalahan kalkulasi perkalian koma." }
+                ],
+                correct: "C"
+            },
+            {
+                id: 16,
+                category: "HOTS",
+                type: "Soal Cerita",
+                question: "Sebuah truk pengangkut memiliki kapasitas maksimal $3,5\\text{ ton}$. Truk tersebut sudah memuat $1,85\\text{ ton}$ beras dan $0,9\\text{ ton}$ jagung. Berapa kg muatan tambahan yang masih dapat diangkut truk tersebut? ($1\\text{ ton} = 1.000\\text{ kg}$)",
+                options: [
+                    { key: "A", text: "650 kg", rationale: "Salah pengurangan desimal." },
+                    { key: "B", text: "850 kg", rationale: "Salah penjumlahan muatan." },
+                    { key: "C", text: "700 kg", rationale: "Kurang teliti menyamakan digit." },
+                    { key: "D", text: "750 kg", rationale: "Tepat! $3,50 - (1,85 + 0,90) = 3,50 - 2,75 = 0,75\\text{ ton} = 750\\text{ kg}$." }
+                ],
+                correct: "D"
+            },
+            {
+                id: 17,
+                category: "Medium",
+                type: "Soal Langsung",
+                question: "Berapakah hasil dari $12,5 \\div 0,25 \\times 0,04$?",
+                options: [
+                    { key: "A", text: "2,0", rationale: "Benar! $12,5 \\div 0,25 = 50$. Kemudian $50 \\times 0,04 = 2,0$." },
+                    { key: "B", text: "0,2", rationale: "Salah meletakkan tanda koma." },
+                    { key: "C", text: "20,0", rationale: "Terlalu besar faktor perkaliannya." },
+                    { key: "D", text: "0,02", rationale: "Kurang tepat dalam pembagian desimal." }
+                ],
+                correct: "A"
+            },
+            {
+                id: 18,
+                category: "HOTS",
+                type: "Soal Cerita",
+                question: "Dalam suatu tes matematika, skor untuk jawaban benar adalah $2,5$, jawaban salah $-1$, dan tidak dijawab $0$. Dari 40 soal, Roni menjawab 28 soal dengan benar, 8 soal salah, dan sisanya tidak dijawab. Berapakah nilai total yang diperoleh Roni?",
+                options: [
+                    { key: "A", text: "60,0", rationale: "Salah menghitung pengurangan skor salah." },
+                    { key: "B", text: "62,0", rationale: "Benar! Skor benar = $28 \\times 2,5 = 70$. Skor salah = $8 \\times (-1) = -8$. Total skor = $70 - 8 = 62,0$." },
+                    { key: "C", text: "64,0", rationale: "Mengabaikan skor pengurangan." },
+                    { key: "D", text: "66,0", rationale: "Salah mengalikan $28 \\times 2,5$." }
+                ],
+                correct: "B"
+            },
+            {
+                id: 19,
+                category: "Medium",
+                type: "Soal Langsung",
+                question: "Bentuk sederhana dari $3,2 \\times (1,5 + 2,5) - 4,8$ adalah...",
+                options: [
+                    { key: "A", text: "8,0", rationale: "Benar! Dalam kurung: $1,5 + 2,5 = 4,0$. Perkalian: $3,2 \\times 4,0 = 12,8$. Pengurangan: $12,8 - 4,8 = 8,0$." },
+                    { key: "B", text: "7,2", rationale: "Salah pengurangan desimal akhir." },
+                    { key: "C", text: "8,8", rationale: "Salah mengalikan dalam kurung." },
+                    { key: "D", text: "9,6", rationale: "Lupa mengurangi dengan 4,8." }
+                ],
+                correct: "A"
+            },
+            {
+                id: 20,
+                category: "HOTS",
+                type: "Soal Cerita",
+                question: "Rina membeli $3,25\\text{ kg}$ apel. Ternyata $0,2$ bagian dari apel tersebut busuk dan dibuang. Berapa kg apel berkualitas baik yang tersisa?",
+                options: [
+                    { key: "A", text: "2,40 kg", rationale: "Salah menghitung sisa bagian." },
+                    { key: "B", text: "2,50 kg", rationale: "Salah perkalian desimal." },
+                    { key: "C", text: "2,60 kg", rationale: "Benar! Apel baik = $1 - 0,2 = 0,8$ bagian. Berat apel baik = $0,8 \\times 3,25 = 2,60\\text{ kg}$." },
+                    { key: "D", text: "2,75 kg", rationale: "Mengurangi langsung $3,25 - 0,2$." }
+                ],
+                correct: "C"
+            },
+            {
+                id: 21,
+                category: "Medium",
+                type: "Soal Langsung",
+                question: "Nilai dari $0,85 - 0,275 + 1,4$ adalah...",
+                options: [
+                    { key: "A", text: "1,975", rationale: "Tepat! $0,850 - 0,275 = 0,575$. Kemudian $0,575 + 1,400 = 1,975$." },
+                    { key: "B", text: "1,875", rationale: "Salah pada peminjaman puluhan." },
+                    { key: "C", text: "2,075", rationale: "Salah penjumlahan di bagian persepuluhan." },
+                    { key: "D", text: "1,925", rationale: "Pengurangan kurang teliti." }
+                ],
+                correct: "A"
+            },
+            {
+                id: 22,
+                category: "HOTS",
+                type: "Soal Cerita",
+                question: "Sebuah tangki berisi $45,5\\text{ liter}$ minyak goreng. Minyak tersebut dialirkan ke dalam jerigen kecil berkapasitas $2,25\\text{ liter}$. Berapa banyak jerigen penuh yang dapat diisi, dan berapa liter sisa minyak dalam tangki?",
+                options: [
+                    { key: "A", text: "20 jerigen dan sisa 0,5 liter", rationale: "Benar! $45,5 \\div 2,25 = 20,222... \\rightarrow 20\\text{ jerigen penuh}$. Minyak terisi = $20 \\times 2,25 = 45,0\\text{ liter}$. Sisa = $45,5 - 45,0 = 0,5\\text{ liter}$." },
+                    { key: "B", text: "20 jerigen dan sisa 0,25 liter", rationale: "Salah menghitung sisa minyak." },
+                    { key: "C", text: "21 jerigen dan tanpa sisa", rationale: "Membulat ke atas padahal belum penuh." },
+                    { key: "D", text: "19 jerigen dan sisa 2,75 liter", rationale: "Pembagian kurang dari jumlah maksimal." }
+                ],
+                correct: "A"
+            },
+            {
+                id: 23,
+                category: "Medium",
+                type: "Soal Langsung",
+                question: "Hasil dari $0,06 \\times 0,05 \\div 0,003$ adalah...",
+                options: [
+                    { key: "A", text: "0,1", rationale: "Salah menghitung banyaknya angka di belakang koma." },
+                    { key: "B", text: "1,0", rationale: "Tepat! $0,06 \\times 0,05 = 0,0030$. Kemudian $0,003 \\div 0,003 = 1,0$." },
+                    { key: "C", text: "10,0", rationale: "Kelebihan faktor perkalian 10." },
+                    { key: "D", text: "0,01", rationale: "Kesalahan pergeseran koma desimal." }
+                ],
+                correct: "B"
+            },
+            {
+                id: 24,
+                category: "HOTS",
+                type: "Soal Cerita",
+                question: "Panjang sebuah persegi panjang adalah $8,4\\text{ cm}$ dan lebarnya $0,75$ dari panjangnya. Berapakah luas persegi panjang tersebut?",
+                options: [
+                    { key: "A", text: "52,92 $\\text{cm}^2$", rationale: "Benar! Lebar = $0,75 \\times 8,4 = 6,3\\text{ cm}$. Luas = $8,4 \\times 6,3 = 52,92\\text{ cm}^2$." },
+                    { key: "B", text: "50,40 $\\text{cm}^2$", rationale: "Salah mengalikan panjang dan lebar." },
+                    { key: "C", text: "48,25 $\\text{cm}^2$", rationale: "Kesalahan menentukan lebar." },
+                    { key: "D", text: "55,12 $\\text{cm}^2$", rationale: "Salah penjumlahan perkalian bersusun." }
+                ],
+                correct: "A"
+            },
+            {
+                id: 25,
+                category: "Medium",
+                type: "Soal Langsung",
+                question: "Berapakah nilai dari $(1,8 \\div 0,3) \\times (0,25 + 0,15)$?",
+                options: [
+                    { key: "A", text: "1,8", rationale: "Salah perkalian koma." },
+                    { key: "B", text: "2,0", rationale: "Salah pembagian awal." },
+                    { key: "C", text: "2,4", rationale: "Benar! $1,8 \\div 0,3 = 6$. Dalam kurung: $0,25 + 0,15 = 0,40$. Hasil = $6 \\times 0,40 = 2,4$." },
+                    { key: "D", text: "3,2", rationale: "Salah mengalikan $6 \\times 0,4$." }
+                ],
+                correct: "C"
+            },
+            {
+                id: 26,
+                category: "HOTS",
+                type: "Soal Cerita",
+                question: "Sebuah toko pakaian memberikan diskon $0,25$ ($25\\%$) untuk semua produk. Jika sebuah baju memiliki harga label $\\text{Rp }180.000,00$ dan dikenakan pajak pembelian sebesar $0,1$ ($10\\%$) dari harga setelah diskon, berapa harga akhir yang harus dibayar?",
+                options: [
+                    { key: "A", text: "$\\text{Rp }148.500,00$", rationale: "Benar! Diskon = $0,25 \\times 180.000 = 45.000$. Harga diskon = $135.000$. Pajak = $0,1 \\times 135.000 = 13.500$. Total = $135.000 + 13.500 = \\text{Rp }148.500,00$." },
+                    { key: "B", text: "$\\text{Rp }153.000,00$", rationale: "Menghitung pajak dari harga awal sebelum diskon." },
+                    { key: "C", text: "$\\text{Rp }135.000,00$", rationale: "Lupa menambahkan biaya pajak." },
+                    { key: "D", text: "$\\text{Rp }162.000,00$", rationale: "Hanya mengalikan pengurangan pajak." }
+                ],
+                correct: "A"
+            },
+            {
+                id: 27,
+                category: "Medium",
+                type: "Soal Langsung",
+                question: "Berapakah nilai dari $\\sqrt{0,0064}$?",
+                options: [
+                    { key: "A", text: "0,8", rationale: "Pengakaran desimal kurang tepat ($0,8^2 = 0,64$)." },
+                    { key: "B", text: "0,08", rationale: "Benar! Karena $0,08 \\times 0,08 = 0,0064$." },
+                    { key: "C", text: "0,008", rationale: "Terlalu banyak digit desimal ($0,008^2 = 0,000064$)." },
+                    { key: "D", text: "0,0008", rationale: "Salah posisi desimal." }
+                ],
+                correct: "B"
+            },
+            {
+                id: 28,
+                category: "HOTS",
+                type: "Soal Cerita",
+                question: "Tiga buah pipa disambungkan. Pipa pertama panjangnya $2,35\\text{ m}$, pipa kedua $1,8\\text{ m}$, dan pipa ketiga $3,15\\text{ m}$. Pada setiap sambungan terjadi tumpangan sepanjang $0,12\\text{ m}$. Berapakah panjang total pipa setelah disambungkan?",
+                options: [
+                    { key: "A", text: "7,06 m", rationale: "Benar! Total awal = $2,35 + 1,80 + 3,15 = 7,30\\text{ m}$. Karena ada 3 pipa, ada 2 sambungan. Pengurangan tumpangan = $2 \\times 0,12 = 0,24\\text{ m}$. Panjang akhir = $7,30 - 0,24 = 7,06\\text{ m}$." },
+                    { key: "B", text: "7,18 m", rationale: "Hanya mengurangi 1 kali tumpangan sambungan." },
+                    { key: "C", text: "6,94 m", rationale: "Mengurangi 3 kali tumpangan sambungan." },
+                    { key: "D", text: "7,30 m", rationale: "Lupa memperhitungkan tumpangan sambungan." }
+                ],
+                correct: "A"
+            },
+            {
+                id: 29,
+                category: "Medium",
+                type: "Soal Langsung",
+                question: "Berapakah hasil penjumlahan dari $3,5 + 0,35 + 0,035$?",
+                options: [
+                    { key: "A", text: "3,885", rationale: "Tepat! $3,500 + 0,350 + 0,035 = 3,885$." },
+                    { key: "B", text: "3,855", rationale: "Salah penjumlahan pada per seratusan." },
+                    { key: "C", text: "3,935", rationale: "Salah meletakkan angka persepuluhan." },
+                    { key: "D", text: "4,035", rationale: "Kesalahan menyimpan angka puluhan." }
+                ],
+                correct: "A"
+            },
+            {
+                id: 30,
+                category: "HOTS",
+                type: "Soal Cerita",
+                question: "Seorang atlet lari berlari sejauh $4,5\\text{ km}$ pada hari pertama. Setiap hari berikutnya ia menambah jarak lari sebesar $0,75\\text{ km}$ dari hari sebelumnya. Berapa total jarak yang ia tempuh selama 4 hari pertama?",
+                options: [
+                    { key: "A", text: "22,5 km", rationale: "Benar! Hari 1 = $4,5\\text{ km}$, Hari 2 = $5,25\\text{ km}$, Hari 3 = $6,0\\text{ km}$, Hari 4 = $6,75\\text{ km}$. Total = $4,5 + 5,25 + 6,0 + 6,75 = 22,5\\text{ km}$." },
+                    { key: "B", text: "21,0 km", rationale: "Salah menjumlahkan hari ke-4." },
+                    { key: "C", text: "24,0 km", rationale: "Kelebihan penambahan jarak." },
+                    { key: "D", text: "18,0 km", rationale: "Hanya mengalikan $4,5 \\times 4$." }
+                ],
+                correct: "A"
+            },
+            {
+                id: 31,
+                category: "Medium",
+                type: "Soal Langsung",
+                question: "Hasil dari $10,5 \\div 1,5 - 2,4 \\times 1,25$ adalah...",
+                options: [
+                    { key: "A", text: "4,0", rationale: "Benar! $10,5 \\div 1,5 = 7,0$. Lalu $2,4 \\times 1,25 = 3,0$. Maka $7,0 - 3,0 = 4,0$." },
+                    { key: "B", text: "3,5", rationale: "Salah mengalikan $2,4 \\times 1,25$." },
+                    { key: "C", text: "4,5", rationale: "Pengurangan desimal tidak pas." },
+                    { key: "D", text: "5,0", rationale: "Salah pada pembagian awal." }
+                ],
+                correct: "A"
+            },
+            {
+                id: 32,
+                category: "HOTS",
+                type: "Soal Cerita",
+                question: "Di suatu toko, harga 3 buah pulpen dan 2 buah penggaris adalah $\\text{Rp }16.500,00$. Jika harga 1 buah pulpen adalah $\\text{Rp }3.500,00$, berapakah harga 1 buah penggaris?",
+                options: [
+                    { key: "A", text: "$\\text{Rp }2.500,00$", rationale: "Salah membagi sisa harga." },
+                    { key: "B", text: "$\\text{Rp }3.000,00$", rationale: "Benar! Total pulpen = $3 \\times 3.500 = \\text{Rp }10.500,00$. Sisa untuk 2 penggaris = $16.500 - 10.500 = \\text{Rp }6.000,00$. Harga 1 penggaris = $6.000 \\div 2 = \\text{Rp }3.000,00$." },
+                    { key: "C", text: "$\\text{Rp }3.500,00$", rationale: "Menganggap harga penggaris sama dengan pulpen." },
+                    { key: "D", text: "$\\text{Rp }4.000,00$", rationale: "Kesalahan pengurangan total." }
+                ],
+                correct: "B"
+            },
+            {
+                id: 33,
+                category: "Medium",
+                type: "Soal Langsung",
+                question: "Hitunglah nilai desimal dari $2,4 \\times 10^{-2} + 3,6 \\times 10^{-1}$.",
+                options: [
+                    { key: "A", text: "0,384", rationale: "Benar! $2,4 \\times 0,01 = 0,024$. Lalu $3,6 \\times 0,1 = 0,360$. Penjumlahan: $0,024 + 0,360 = 0,384$." },
+                    { key: "B", text: "0,060", rationale: "Salah menjumlahkan eksponen sepuluh." },
+                    { key: "C", text: "0,3624", rationale: "Salah penempatan digit per seribuan." },
+                    { key: "D", text: "3,84", rationale: "Kelebihan faktor 10." }
+                ],
+                correct: "A"
+            },
+            {
+                id: 34,
+                category: "HOTS",
+                type: "Soal Cerita",
+                question: "Ibu memiliki $4,8\\text{ kg}$ tepung terigu. Ibu menggunakan $0,35$ bagian untuk membuat kue bolu dan $0,25$ bagian untuk membuat kue kering. Berapa kg tepung terigu yang masih tersisa?",
+                options: [
+                    { key: "A", text: "1,92 kg", rationale: "Benar! Bagian tersisa = $1 - (0,35 + 0,25) = 1 - 0,60 = 0,40$ bagian. Sisa tepung = $0,40 \\times 4,8 = 1,92\\text{ kg}$." },
+                    { key: "B", text: "2,16 kg", rationale: "Salah perkalian desimal." },
+                    { key: "C", text: "1,68 kg", rationale: "Hanya mengurangi tepung untuk kue bolu." },
+                    { key: "D", text: "2,40 kg", rationale: "Menganggap sisa setengah bagian." }
+                ],
+                correct: "A"
+            },
+            {
+                id: 35,
+                category: "Medium",
+                type: "Soal Langsung",
+                question: "Berapakah hasil dari $\\frac{0,36 \\times 0,4}{0,012}$?",
+                options: [
+                    { key: "A", text: "12,0", rationale: "Tepat! Pembilang = $0,36 \\times 0,4 = 0,144$. Pembagian = $0,144 \\div 0,012 = 144 \\div 12 = 12,0$." },
+                    { key: "B", text: "1,2", rationale: "Salah tanda koma desimal." },
+                    { key: "C", text: "120,0", rationale: "Terlalu besar perkalian sepuluh." },
+                    { key: "D", text: "0,12", rationale: "Kurang tepat membagi desimal." }
+                ],
+                correct: "A"
+            },
+            {
+                id: 36,
+                category: "HOTS",
+                type: "Soal Cerita",
+                question: "Kecepatan rata-rata sebuah sepeda motor adalah $45,6\\text{ km/jam}$. Berapakah jarak yang ditempuh motor tersebut dalam waktu $2\\text{ jam }15\\text{ menit}$?",
+                options: [
+                    { key: "A", text: "102,6 km", rationale: "Benar! $2\\text{ jam }15\\text{ menit} = 2,25\\text{ jam}$. Jarak = $45,6 \\times 2,25 = 102,6\\text{ km}$." },
+                    { key: "B", text: "98,4 km", rationale: "Mengalikan $45,6 \\times 2,15$ (salah konversi menit ke desimal jam)." },
+                    { key: "C", text: "105,2 km", rationale: "Salah mengalikan desimal." },
+                    { key: "D", text: "112,5 km", rationale: "Kesalahan konversi waktu." }
+                ],
+                correct: "A"
+            },
+            {
+                id: 37,
+                category: "Medium",
+                type: "Soal Langsung",
+                question: "Nilai dari $(2,5)^2 - (1,5)^2$ adalah...",
+                options: [
+                    { key: "A", text: "4,0", rationale: "Tepat! $(2,5)^2 = 6,25$ dan $(1,5)^2 = 2,25$. Pengurangan: $6,25 - 2,25 = 4,0$." },
+                    { key: "B", text: "3,5", rationale: "Salah pengurangan." },
+                    { key: "C", text: "5,0", rationale: "Salah kuadrat." },
+                    { key: "D", text: "2,0", rationale: "Hanya mengurangi $2,5 - 1,5$ tanpa kuadrat." }
+                ],
+                correct: "A"
+            },
+            {
+                id: 38,
+                category: "HOTS",
+                type: "Soal Cerita",
+                question: "Sebuah bejana berbentuk kubus memiliki panjang rusuk $0,6\\text{ meter}$. Bejana tersebut diisi air sebanyak $0,75$ dari kapasitas maksimumnya. Berapa liter volume air dalam bejana tersebut? ($1\\text{ m}^3 = 1.000\\text{ liter}$)",
+                options: [
+                    { key: "A", text: "162 liter", rationale: "Benar! Volume total = $0,6 \\times 0,6 \\times 0,6 = 0,216\\text{ m}^3 = 216\\text{ liter}$. Air terisi = $0,75 \\times 216 = 162\\text{ liter}$." },
+                    { key: "B", text: "180 liter", rationale: "Salah mengalikan volume total." },
+                    { key: "C", text: "144 liter", rationale: "Salah menghitung rusuk kubus." },
+                    { key: "D", text: "216 liter", rationale: "Volume bejana penuh tanpa dikali 0,75." }
+                ],
+                correct: "A"
+            },
+            {
+                id: 39,
+                category: "Medium",
+                type: "Soal Langsung",
+                question: "Hasil dari $0,5 + 0,5 \\times 0,5 - 0,5 \\div 0,5$ adalah...",
+                options: [
+                    { key: "A", text: "-0,25", rationale: "Benar! Perkalian: $0,5 \\times 0,5 = 0,25$. Pembagian: $0,5 \\div 0,5 = 1,0$. Gabungan: $0,5 + 0,25 - 1,0 = 0,75 - 1,0 = -0,25$." },
+                    { key: "B", text: "0,25", rationale: "Salah tanda positif/negatif." },
+                    { key: "C", text: "0,0", rationale: "Salah urutan operasi matematika." },
+                    { key: "D", text: "0,5", rationale: "Abaikan perkalian/pembagian awal." }
+                ],
+                correct: "A"
+            },
+            {
+                id: 40,
+                category: "HOTS",
+                type: "Soal Cerita",
+                question: "Rian membeli $1,5\\text{ kg}$ telur, $2,25\\text{ kg}$ gula, dan $3,125\\text{ kg}$ beras. Setelah sampai di rumah, semua bahan ditimbang ulang dan total beratnya menjadi $6,75\\text{ kg}$ karena kantong timbangan bocor. Berapa kg berat bahan belanjaan Rian yang hilang?",
+                options: [
+                    { key: "A", text: "0,125 kg", rationale: "Benar! Berat awal = $1,500 + 2,250 + 3,125 = 6,875\\text{ kg}$. Berat tersisa = $6,750\\text{ kg}$. Bahan hilang = $6,875 - 6,750 = 0,125\\text{ kg}$." },
+                    { key: "B", text: "0,225 kg", rationale: "Salah pengurangan desimal." },
+                    { key: "C", text: "0,375 kg", rationale: "Salah meletakkan angka per seribu." },
+                    { key: "D", text: "0,050 kg", rationale: "Kurang teliti menyamakan digit desimal." }
+                ],
+                correct: "A"
+            }
+        ];
+
+        // State Management & LocalStorage
+        let currentIndex = 0;
+        let userAnswers = {}; // { qId: selectedOptionKey }
+        let doubtStatus = {}; // { qId: boolean }
+
+        const STORAGE_KEY_ANSWERS = "quiz_desimal_answers_v1";
+        const STORAGE_KEY_DOUBTS = "quiz_desimal_doubts_v1";
+
+        // Initialize App
+        window.addEventListener('DOMContentLoaded', () => {
+            loadSavedData();
+            renderNavGrid();
+            loadQuestion(currentIndex);
+            updateProgressSummary();
+        });
+
+        function loadSavedData() {
+            const savedAnswers = localStorage.getItem(STORAGE_KEY_ANSWERS);
+            const savedDoubts = localStorage.getItem(STORAGE_KEY_DOUBTS);
+            if (savedAnswers) userAnswers = JSON.parse(savedAnswers);
+            if (savedDoubts) doubtStatus = JSON.parse(savedDoubts);
+        }
+
+        function saveData() {
+            localStorage.setItem(STORAGE_KEY_ANSWERS, JSON.stringify(userAnswers));
+            localStorage.setItem(STORAGE_KEY_DOUBTS, JSON.stringify(doubtStatus));
+        }
+
+        function renderNavGrid() {
+            const gridContainer = document.getElementById('nav-grid');
+            gridContainer.innerHTML = '';
+
+            questionsData.forEach((q, index) => {
+                const btn = document.createElement('button');
+                btn.id = `nav-btn-${index}`;
+                btn.innerText = index + 1;
+                btn.className = getNavBtnClass(index);
+                btn.onclick = () => jumpToQuestion(index);
+                gridContainer.appendChild(btn);
+            });
+        }
+
+        function getNavBtnClass(index) {
+            const q = questionsData[index];
+            const isCurrent = index === currentIndex;
+            const answeredKey = userAnswers[q.id];
+            const isDoubt = doubtStatus[q.id];
+
+            let bgClass = "bg-slate-100 text-slate-700 hover:bg-slate-200 border-slate-200";
+
+            if (isDoubt) {
+                bgClass = "bg-amber-400 text-slate-900 font-bold border-amber-500";
+            } else if (answeredKey) {
+                if (answeredKey === q.correct) {
+                    bgClass = "bg-emerald-500 text-white font-bold border-emerald-600";
+                } else {
+                    bgClass = "bg-rose-500 text-white font-bold border-rose-600";
+                }
+            }
+
+            const borderActive = isCurrent ? "ring-2 ring-blue-600 ring-offset-1 font-extrabold" : "";
+
+            return `w-full h-10 rounded-xl text-xs sm:text-sm font-medium border transition flex items-center justify-center ${bgClass} ${borderActive}`;
+        }
+
+        function updateNavGridStyles() {
+            questionsData.forEach((_, index) => {
+                const btn = document.getElementById(`nav-btn-${index}`);
+                if (btn) btn.className = getNavBtnClass(index);
+            });
+        }
+
+        function renderMath() {
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise();
+            }
+        }
+
+        function loadQuestion(index) {
+            currentIndex = index;
+            const q = questionsData[index];
+
+            // Badges
+            document.getElementById('question-number-badge').innerText = `Soal ${index + 1} dari 40`;
+            document.getElementById('question-difficulty').innerText = q.category;
+            document.getElementById('question-type').innerText = q.type;
+            document.getElementById('current-pos').innerText = `Hal ${index + 1} dari 40`;
+
+            // Doubt Button state
+            const doubtBtn = document.getElementById('doubt-btn');
+            if (doubtStatus[q.id]) {
+                doubtBtn.className = "text-xs font-semibold text-amber-700 bg-amber-100 border border-amber-400 px-3 py-1.5 rounded-lg transition flex items-center gap-1.5";
+            } else {
+                doubtBtn.className = "text-xs font-medium text-slate-500 hover:text-amber-600 bg-slate-50 border border-slate-200 hover:border-amber-400 px-3 py-1.5 rounded-lg transition flex items-center gap-1.5";
+            }
+
+            // Text
+            document.getElementById('question-text').innerHTML = q.question;
+
+            // Options
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            const selectedKey = userAnswers[q.id];
+
+            q.options.forEach(opt => {
+                const isSelected = selectedKey === opt.key;
+                const isCorrect = opt.key === q.correct;
+
+                let optStyle = "border-slate-200 hover:border-blue-400 hover:bg-slate-50";
+                let badgeStyle = "bg-slate-100 text-slate-700";
+
+                if (selectedKey) {
+                    if (isCorrect) {
+                        optStyle = "border-emerald-500 bg-emerald-50/70 text-emerald-900 font-medium";
+                        badgeStyle = "bg-emerald-600 text-white";
+                    } else if (isSelected && !isCorrect) {
+                        optStyle = "border-rose-500 bg-rose-50/70 text-rose-900 font-medium";
+                        badgeStyle = "bg-rose-600 text-white";
+                    } else {
+                        optStyle = "border-slate-200 opacity-60";
+                    }
+                }
+
+                const optBtn = document.createElement('button');
+                optBtn.className = `w-full p-4 rounded-xl border text-left text-sm sm:text-base transition flex items-center justify-between gap-3 ${optStyle}`;
+                optBtn.onclick = () => selectOption(q.id, opt.key);
+
+                optBtn.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-lg font-bold text-xs sm:text-sm flex items-center justify-center shrink-0 ${badgeStyle}">${opt.key}</span>
+                        <span>${opt.text}</span>
+                    </div>
+                    ${selectedKey && isCorrect ? '<i class="fa-solid fa-circle-check text-emerald-600 text-lg"></i>' : ''}
+                    ${selectedKey && isSelected && !isCorrect ? '<i class="fa-solid fa-circle-xmark text-rose-600 text-lg"></i>' : ''}
+                `;
+
+                optionsContainer.appendChild(optBtn);
+            });
+
+            // Feedback Box
+            const feedbackBox = document.getElementById('feedback-box');
+            if (selectedKey) {
+                const optObj = q.options.find(o => o.key === selectedKey);
+                const isCorrect = selectedKey === q.correct;
+
+                feedbackBox.classList.remove('hidden', 'bg-emerald-50', 'border-emerald-200', 'bg-rose-50', 'border-rose-200');
+
+                if (isCorrect) {
+                    feedbackBox.classList.add('bg-emerald-50', 'border-emerald-200');
+                    document.getElementById('feedback-title').className = "font-bold flex items-center gap-2 text-sm text-emerald-800";
+                    document.getElementById('feedback-title').innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600"></i> Jawaban Kamu Benar!`;
+                } else {
+                    feedbackBox.classList.add('bg-rose-50', 'border-rose-200');
+                    document.getElementById('feedback-title').className = "font-bold flex items-center gap-2 text-sm text-rose-800";
+                    document.getElementById('feedback-title').innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600"></i> Jawaban Kurang Tepat (Kunci: ${q.correct})`;
+                }
+
+                document.getElementById('feedback-rationale').innerText = optObj ? optObj.rationale : "";
+            } else {
+                feedbackBox.classList.add('hidden');
+            }
+
+            // Prev/Next Btn State
+            document.getElementById('prev-btn').disabled = index === 0;
+            document.getElementById('next-btn').disabled = index === questionsData.length - 1;
+
+            updateNavGridStyles();
+            renderMath();
+        }
+
+        function selectOption(qId, key) {
+            userAnswers[qId] = key;
+            saveData();
+            loadQuestion(currentIndex);
+            updateProgressSummary();
+        }
+
+        function toggleDoubt() {
+            const q = questionsData[currentIndex];
+            doubtStatus[q.id] = !doubtStatus[q.id];
+            saveData();
+            loadQuestion(currentIndex);
+        }
+
+        function jumpToQuestion(index) {
+            loadQuestion(index);
+        }
+
+        function prevQuestion() {
+            if (currentIndex > 0) loadQuestion(currentIndex - 1);
+        }
+
+        function nextQuestion() {
+            if (currentIndex < questionsData.length - 1) loadQuestion(currentIndex + 1);
+        }
+
+        function updateProgressSummary() {
+            const answeredCount = Object.keys(userAnswers).length;
+            document.getElementById('progress-text').innerText = `${answeredCount}/40 Dijawab`;
+        }
+
+        function submitQuizConfirm() {
+            const answeredCount = Object.keys(userAnswers).length;
+            if (answeredCount < 40) {
+                if (confirm(`Kamu baru menjawab ${answeredCount} dari 40 soal. Yakin ingin menyelesaikan quiz sekarang?`)) {
+                    showResults();
+                }
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            let correctCount = 0;
+            let filledCount = 0;
+
+            questionsData.forEach(q => {
+                if (userAnswers[q.id]) {
+                    filledCount++;
+                    if (userAnswers[q.id] === q.correct) correctCount++;
+                }
+            });
+
+            const score = ((correctCount / 40) * 100).toFixed(1);
+
+            document.getElementById('final-score').innerText = score;
+            document.getElementById('count-correct').innerText = correctCount;
+            document.getElementById('count-wrong').innerText = filledCount - correctCount;
+            document.getElementById('count-filled').innerText = `${filledCount}/40`;
+
+            let predicate = "Perlu Belajar Lagi";
+            if (score >= 90) predicate = "Luar Biasa! Sangat Menguasai (Sangat Baik)";
+            else if (score >= 75) predicate = "Hebat! Menguasai Materi Dengan Baik";
+            else if (score >= 60) predicate = "Cukup Baik! Tingkatkan Latihan Soal HOTS";
+
+            document.getElementById('score-predicate').innerText = predicate;
+
+            document.getElementById('result-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('result-modal').classList.add('hidden');
+        }
+
+        function resetQuiz() {
+            if (confirm("Apakah kamu yakin ingin mengulang quiz dari awal? Semua progres jawaban akan dihapus.")) {
+                userAnswers = {};
+                doubtStatus = {};
+                localStorage.removeItem(STORAGE_KEY_ANSWERS);
+                localStorage.removeItem(STORAGE_KEY_DOUBTS);
+                closeModal();
+                loadQuestion(0);
+                updateProgressSummary();
+            }
+        }
+    </script>
+</body>
+</html>
